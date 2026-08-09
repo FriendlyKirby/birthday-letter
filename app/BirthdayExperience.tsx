@@ -289,7 +289,7 @@ export function BirthdayExperience({ content }: Props) {
           </button>
 
           <div className="envelope-front">
-            <span className="postmark">FAE POST<br />08 · 09</span>
+            <span className="postmark">FAE POST<br />08 · 10</span>
             <span className="address">to {content.recipientName}</span>
             <span className="postal-flower" aria-hidden="true">✿</span>
           </div>
