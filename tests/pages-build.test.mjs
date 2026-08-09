@@ -10,7 +10,7 @@ test("GitHub Pages build contains the complete static gift", async () => {
   assert.match(html, /assets\/index-[^\"']+\.js/);
 
   await access(new URL("assets/pokopia/expansion-pass-hero.jpg", output));
-  await access(new URL("downloads/daily-games-extension.zip", output));
+  await access(new URL("downloads/chrome-web-store-submission-v0.2.14.zip", output));
   await access(new URL("og.png", output));
 });
 
@@ -21,4 +21,11 @@ test("GitHub Pages client has no duplicate Pokopia logo or couple PFP UI", async
   const script = await readFile(new URL(`assets/${scriptName}`, output), "utf8");
   assert.doesNotMatch(script, /bubbly-basin-logo/);
   assert.doesNotMatch(script, /couplePfp|Save yours|Save mine/);
+  assert.match(script, /_y9Di1Vkrbc/);
+  assert.match(script, /K\.K\. Lovers/);
+});
+
+test("hover styling does not move buttons away from the pointer", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.doesNotMatch(css, /:hover[\s\S]{0,140}translateY\(-2px\)/);
 });

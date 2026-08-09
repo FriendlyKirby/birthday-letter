@@ -29,6 +29,7 @@ export function BirthdayExperience({ content }: Props) {
   const [codeMessage, setCodeMessage] = useState("");
   const [copied, setCopied] = useState(false);
   const [secretCount, setSecretCount] = useState(0);
+  const [musicOpen, setMusicOpen] = useState(false);
 
   const flapOpen = flapProgress >= 1;
 
@@ -153,6 +154,57 @@ export function BirthdayExperience({ content }: Props) {
       <Petal className="petal-one" />
       <Petal className="petal-two" />
       <Petal className="petal-three" />
+
+      <div className={`music-dock ${musicOpen ? "is-open" : ""}`}>
+        {musicOpen ? (
+          <aside className="music-player" aria-label="Background music player">
+            <header className="music-player-header">
+              <span className="music-player-icon" aria-hidden="true">♪</span>
+              <span>
+                <small>now playing</small>
+                <strong>{content.music.title}</strong>
+              </span>
+              <button
+                className="music-close"
+                type="button"
+                onClick={() => setMusicOpen(false)}
+                aria-label="Stop background music"
+              >
+                ×
+              </button>
+            </header>
+            <iframe
+              className="youtube-player"
+              src={`https://www.youtube-nocookie.com/embed/${content.music.youtubeVideoId}?autoplay=1&loop=1&playlist=${content.music.youtubeVideoId}&playsinline=1&rel=0`}
+              title={`${content.music.title} by ${content.music.artist}`}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+            <a
+              className="music-source"
+              href={`https://www.youtube.com/watch?v=${content.music.youtubeVideoId}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Listen on YouTube
+            </a>
+          </aside>
+        ) : (
+          <button
+            className="music-start"
+            type="button"
+            onClick={() => setMusicOpen(true)}
+            aria-label={`Play ${content.music.title} by ${content.music.artist}`}
+          >
+            <span className="music-start-icon" aria-hidden="true">♪</span>
+            <span>
+              <small>background music</small>
+              <strong>Play {content.music.title}</strong>
+            </span>
+          </button>
+        )}
+      </div>
 
       <section className={`delivery-stage ${letterOpen ? "is-finished" : ""}`}>
         <p className="stage-kicker">Fae Post · Special delivery</p>
@@ -306,15 +358,15 @@ export function BirthdayExperience({ content }: Props) {
               <h3>{content.extension.title}</h3>
               <p>{content.extension.message}</p>
               <a className="download-button" href={assetPath(content.extension.downloadPath)} download>
-                Download your extension
+                Download {content.extension.version}
               </a>
               <details className="install-help">
                 <summary>How to add it to Chrome</summary>
                 <ol>
-                  <li>Download and unzip the folder.</li>
+                  <li>Download and unzip the package.</li>
                   <li>Open <code>chrome://extensions</code>.</li>
                   <li>Turn on Developer mode.</li>
-                  <li>Choose Load unpacked and select the unzipped folder.</li>
+                  <li>Choose Load unpacked and select the <code>daily-puzzle-launcher-chrome-brave-v0.2.14</code> folder.</li>
                 </ol>
               </details>
             </div>

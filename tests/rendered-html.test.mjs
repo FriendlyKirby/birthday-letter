@@ -30,7 +30,8 @@ test("server-renders the finished birthday experience", async () => {
   assert.match(html, /A Little Letter, Carried by Summer/i);
   assert.match(html, /Fae Post/);
   assert.match(html, /Pokopia Expansion Pass/);
-  assert.match(html, /daily-games-extension\.zip/);
+  assert.match(html, /chrome-web-store-submission-v0\.2\.14\.zip/);
+  assert.match(html, /K\.K\. Lovers/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
   assert.doesNotMatch(html, /CODEX-TEST-NEVER-BUNDLE-8291/);
 });

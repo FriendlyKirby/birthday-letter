@@ -24,10 +24,16 @@ Happy birthday, sweetheart. I love you more than I ever manage to fit into words
   earbudsMessage:
     "If your brother ends up not getting you the earbuds, let me know and I’ll pick out the best ones for you and buy them for you.",
   extension: {
-    title: "Our games, all together",
+    title: "Daily Puzzle Launcher",
     message:
       "I made you a tiny Chrome companion for keeping our daily games in one sweet, tidy place.",
-    downloadPath: "/downloads/daily-games-extension.zip",
+    downloadPath: "/downloads/chrome-web-store-submission-v0.2.14.zip",
+    version: "v0.2.14",
+  },
+  music: {
+    title: "K.K. Lovers",
+    artist: "K.K. Slider",
+    youtubeVideoId: "_y9Di1Vkrbc",
   },
 } as const;
 

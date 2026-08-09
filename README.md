@@ -16,4 +16,6 @@ pnpm run dev:pages
 pnpm run test:pages
 ```
 
-The unpacked Chrome extension source is in `extension/`. Its gift-ready ZIP is in `public/downloads/`.
+The unpacked legacy Chrome extension source is in `extension/`. The current v0.2.14 gift package is in `public/downloads/`.
+
+After editing content, rebuild with `pnpm run build:pages`, commit the updated `pages-dist/` folder, and push `main`. The GitHub Actions workflow deploys that folder without reinstalling dependencies.
