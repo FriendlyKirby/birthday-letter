@@ -415,13 +415,43 @@ export function BirthdayExperience({ content }: Props) {
                 </a>
               </div>
               <details className="install-help">
-                <summary>How to add it to Chrome</summary>
+                <summary>How to add it to Chrome / Brave</summary>
                 <ol>
                   <li>Download and unzip the package.</li>
-                  <li>Open <code>chrome://extensions</code>.</li>
+                  <li>
+                    Open <code>chrome://extensions</code> in Chrome or{" "}
+                    <code>brave://extensions</code> in Brave.
+                  </li>
                   <li>Turn on Developer mode.</li>
-                  <li>Choose Load unpacked and select the <code>daily-puzzle-launcher-chrome-brave-v0.2.14</code> folder.</li>
+                  <li>
+                    Choose Load unpacked and select the{" "}
+                    <code>daily-puzzle-launcher-chrome-brave-v0.2.14</code> folder.
+                  </li>
                 </ol>
+              </details>
+              
+              <details className="install-help">
+                <summary>How to add it to Safari</summary>
+                <ol>
+                  <li>Download and unzip the Safari package.</li>
+                  <li>
+                    Open Safari → Settings → Advanced and turn on{" "}
+                    <strong>Show features for web developers</strong>.
+                  </li>
+                  <li>
+                    Open the new Developer tab and turn on{" "}
+                    <strong>Allow unsigned extensions</strong>.
+                  </li>
+                  <li>Click <strong>Add Temporary Extension</strong>.</li>
+                  <li>
+                    Select the unzipped Safari extension folder containing{" "}
+                    <code>manifest.json</code>.
+                  </li>
+                </ol>
+                <p>
+                  Safari treats this as a temporary extension, so you may need to add it
+                  again after closing Safari or after 24 hours ♡
+                </p>
               </details>
             </div>
           </section>
