@@ -1,6 +1,7 @@
 export const giftContent = {
   recipientName: "my love",
   senderName: "always yours",
+  salutation: "My sweetest love,",
   cardTitle: "Happy Birthday, my love",
   cardSubtitle: "A little letter, carried by summer",
   letterMessage: `I hope today wraps around you as softly as sunshine through the trees.
@@ -17,6 +18,7 @@ Happy birthday, sweetheart. I love you more than I ever manage to fit into words
     title: "Something new to explore",
     message:
       "A Pokémon Pokopia Expansion Pass, with new places, new friends, and one more cozy world to make your own.",
+    code: "REPLACE_WITH_YOUR_POKOPIA_CODE",
   },
   spoilingMessage: "I just want to spoil you for the rest of our lives.",
   earbudsMessage:
@@ -26,12 +28,6 @@ Happy birthday, sweetheart. I love you more than I ever manage to fit into words
     message:
       "I made you a tiny Chrome companion for keeping our daily games in one sweet, tidy place.",
     downloadPath: "/downloads/daily-games-extension.zip",
-  },
-  couplePfp: {
-    enabled: false,
-    cardIllustration: "/assets/couple/couple-illustration.png",
-    herPfp: "/assets/couple/her-pfp.png",
-    myPfp: "/assets/couple/my-pfp.png",
   },
 } as const;
 

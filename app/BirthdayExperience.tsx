@@ -9,6 +9,9 @@ type DragKind = "flap" | "letter" | null;
 const clamp = (value: number, min = 0, max = 1) =>
   Math.min(max, Math.max(min, value));
 
+const assetPath = (path: string) =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+
 function Petal({ className }: { className: string }) {
   return <span className={`petal ${className}`} aria-hidden="true" />;
 }
@@ -71,6 +74,21 @@ export function BirthdayExperience({ content }: Props) {
   async function revealCode() {
     setCodeState("loading");
     setCodeMessage("");
+
+    if (import.meta.env.VITE_STATIC_SITE === "true") {
+      window.setTimeout(() => {
+        const staticCode = content.pokopia.code.trim();
+        if (!staticCode || staticCode.startsWith("REPLACE_WITH_")) {
+          setCodeState("error");
+          setCodeMessage("This little parcel is still waiting for its gift code.");
+          return;
+        }
+        setCode(staticCode);
+        setCodeState("shown");
+      }, 520);
+      return;
+    }
+
     try {
       const giftToken = new URLSearchParams(window.location.search).get("gift") ?? "";
       const response = await fetch("/api/pokopia", {
@@ -102,7 +120,30 @@ export function BirthdayExperience({ content }: Props) {
   }
 
   function findSecret() {
-    setSecretCount((count) => Math.min(3, count + 1));
+    setSecretCount(1);
+  }
+
+  function scrollToBeginning() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    const start = window.scrollY;
+    const duration = 1500;
+    const startedAt = performance.now();
+    const ease = (progress: number) =>
+      progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    const animate = (now: number) => {
+      const progress = clamp((now - startedAt) / duration);
+      window.scrollTo(0, Math.round(start * (1 - ease(progress))));
+      if (progress < 1) window.requestAnimationFrame(animate);
+    };
+
+    window.requestAnimationFrame(animate);
   }
 
   return (
@@ -119,7 +160,7 @@ export function BirthdayExperience({ content }: Props) {
         <p className="stage-note">Lift the flap, then pull the letter free.</p>
 
         <div
-          className="envelope-scene"
+          className={`envelope-scene ${flapOpen ? "is-flap-open" : ""}`}
           style={
             {
               "--flap-progress": flapProgress,
@@ -172,6 +213,7 @@ export function BirthdayExperience({ content }: Props) {
               if (flapProgress === 0) setFlapProgress(1);
             }}
           >
+            <span className="flap-paper" aria-hidden="true" />
             <span className="wax-seal" aria-hidden="true">J</span>
             <span className="flap-hint">lift</span>
           </button>
@@ -194,7 +236,7 @@ export function BirthdayExperience({ content }: Props) {
           </header>
 
           <section className="love-letter paper-section">
-            <p className="salutation">My sweetest {content.recipientName},</p>
+            <p className="salutation">{content.salutation}</p>
             <div className="letter-copy">
               {content.letterMessage.split("\n\n").map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
@@ -213,13 +255,8 @@ export function BirthdayExperience({ content }: Props) {
             <div className="pokopia-visual">
               <img
                 className="pokopia-hero"
-                src="/assets/pokopia/expansion-pass-hero.jpg"
+                src={assetPath("/assets/pokopia/expansion-pass-hero.jpg")}
                 alt="Official Pokémon Pokopia Expansion Pass artwork"
-              />
-              <img
-                className="pokopia-logo"
-                src="/assets/pokopia/bubbly-basin-logo.png"
-                alt="Pokémon Pokopia Expansion Pass, Bubbly Basin"
               />
             </div>
             <div className="pokopia-copy">
@@ -268,7 +305,7 @@ export function BirthdayExperience({ content }: Props) {
               <p className="gift-eyebrow">Something I made for us</p>
               <h3>{content.extension.title}</h3>
               <p>{content.extension.message}</p>
-              <a className="download-button" href={content.extension.downloadPath} download>
+              <a className="download-button" href={assetPath(content.extension.downloadPath)} download>
                 Download your extension
               </a>
               <details className="install-help">
@@ -290,46 +327,21 @@ export function BirthdayExperience({ content }: Props) {
             <p>{content.earbudsMessage}</p>
           </section>
 
-          {content.couplePfp.enabled ? (
-            <section className="pfp-reveal gift-section">
-              <img src={content.couplePfp.cardIllustration} alt="Our couple illustration" />
-              <div>
-                <p className="gift-eyebrow">A tiny piece of us</p>
-                <h3>Matching, wherever we go</h3>
-                <div className="pfp-actions">
-                  <a href={content.couplePfp.herPfp} download>Save yours</a>
-                  <a href={content.couplePfp.myPfp} download>Save mine</a>
-                </div>
-              </div>
-            </section>
-          ) : (
-            <section className="botanical-heart" aria-label="A decorative love note">
-              <button className="secret secret-left" type="button" onClick={findSecret} aria-label="Tiny hidden flower">✦</button>
-              <div className="heart-sun" aria-hidden="true"><span>you</span><i>+</i><span>me</span></div>
-              <div className="stem stem-left" aria-hidden="true"><i /><i /><i /></div>
-              <div className="stem stem-right" aria-hidden="true"><i /><i /><i /></div>
-              <button className="secret secret-right" type="button" onClick={findSecret} aria-label="Tiny hidden butterfly">✧</button>
-              <p>my favorite place is beside you</p>
-            </section>
-          )}
-
           <footer className="letter-ending">
             <button className="tiny-frog" type="button" onClick={findSecret} aria-label="A tiny hidden frog">
               <span className="frog-eyes">••</span>
               <span className="frog-smile">⌣</span>
             </button>
             <p>{content.finalMessage}</p>
-            {secretCount > 0 && (
+            {secretCount === 1 && (
               <span className="secret-message" aria-live="polite">
-                {secretCount < 3
-                  ? `${secretCount} tiny secret${secretCount > 1 ? "s" : ""} found`
-                  : "All three tiny secrets found. The fae approve ♡"}
+                Tiny frog found. The fae approve ♡
               </span>
             )}
             <button
               className="read-again"
               type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={scrollToBeginning}
             >
               Read from the beginning
             </button>

@@ -181,11 +181,17 @@ summary:focus-visible {
 
 .envelope-scene {
   position: relative;
+  isolation: isolate;
   width: min(560px, 88vw);
   aspect-ratio: 1.48;
   perspective: 1200px;
   touch-action: none;
   user-select: none;
+  transition: transform 520ms cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+.envelope-scene.is-flap-open {
+  transform: translateY(42px);
 }
 
 .envelope-shadow {
@@ -223,7 +229,7 @@ summary:focus-visible {
 }
 
 .letter-tab {
-  z-index: 2;
+  z-index: 4;
   top: 18%;
   left: 7%;
   width: 86%;
@@ -266,7 +272,7 @@ summary:focus-visible {
 }
 
 .envelope-front {
-  z-index: 3;
+  z-index: 5;
   top: 12%;
   height: 76%;
   overflow: hidden;
@@ -282,7 +288,7 @@ summary:focus-visible {
 .address {
   position: absolute;
   left: 50%;
-  top: 61%;
+  top: 75%;
   transform: translate(-50%, -50%);
   font-family: Georgia, serif;
   font-size: clamp(1.05rem, 3.4vw, 1.6rem);
@@ -317,19 +323,34 @@ summary:focus-visible {
 }
 
 .envelope-flap {
-  z-index: 4;
+  z-index: 6;
   top: 12%;
   height: 49%;
   border: 0;
   padding: 0;
+  overflow: visible;
   transform-origin: 50% 0;
-  transform: rotateX(calc(var(--flap-progress) * 178deg));
+  transform:
+    rotateX(calc(var(--flap-progress) * 178deg))
+    scaleY(calc(1 - var(--flap-progress) * 0.32));
   transform-style: preserve-3d;
   transition: transform 420ms cubic-bezier(0.18, 0.8, 0.2, 1);
+  background: transparent;
+  cursor: grab;
+}
+
+.flap-paper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   background: linear-gradient(160deg, #fff3d5, #e3d1aa);
-  cursor: grab;
   filter: drop-shadow(0 5px 4px rgba(64, 58, 43, 0.12));
+}
+
+.is-flap-open .envelope-flap {
+  z-index: 1;
+  pointer-events: none;
 }
 
 .envelope-flap:active,
@@ -340,7 +361,8 @@ summary:focus-visible {
 .wax-seal {
   position: absolute;
   left: 50%;
-  bottom: 3%;
+  bottom: 0;
+  z-index: 2;
   width: 58px;
   height: 58px;
   display: grid;
@@ -352,12 +374,15 @@ summary:focus-visible {
   font-family: Georgia, serif;
   font-size: 1.4rem;
   transform: translate(-50%, 50%) rotate(-4deg);
+  opacity: calc(1 - var(--flap-progress) * 1.5);
+  transition: opacity 180ms ease;
 }
 
 .flap-hint {
   position: absolute;
   left: 50%;
   bottom: -56px;
+  z-index: 3;
   color: var(--ink-soft);
   font-size: 0.64rem;
   font-weight: 800;
@@ -365,6 +390,17 @@ summary:focus-visible {
   text-transform: uppercase;
   transform: translateX(-50%);
   opacity: calc(1 - var(--flap-progress));
+}
+
+.envelope-flap:focus-visible {
+  outline: none;
+}
+
+.envelope-flap:focus-visible .wax-seal {
+  box-shadow:
+    inset 0 0 0 4px rgba(126, 48, 52, 0.18),
+    0 0 0 4px rgba(45, 111, 101, 0.45),
+    0 5px 12px rgba(84, 45, 46, 0.22);
 }
 
 .interaction-help {
@@ -578,14 +614,6 @@ summary:focus-visible {
   object-fit: cover;
 }
 
-.pokopia-logo {
-  position: absolute;
-  left: 24px;
-  bottom: 22px;
-  width: min(52%, 265px);
-  filter: drop-shadow(0 10px 10px rgba(25, 69, 78, 0.25));
-}
-
 .pokopia-copy {
   padding: clamp(35px, 5vw, 64px) clamp(28px, 4vw, 52px);
   align-self: center;
@@ -593,8 +621,7 @@ summary:focus-visible {
 
 .pokopia-copy h3,
 .gift-note h3,
-.earbuds-note h3,
-.pfp-reveal h3 {
+.earbuds-note h3 {
   margin: 0 0 15px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2rem, 4vw, 3.45rem);
@@ -606,8 +633,7 @@ summary:focus-visible {
 
 .pokopia-copy > p:not(.gift-eyebrow),
 .gift-note > p:not(.gift-eyebrow),
-.earbuds-note > p:not(.gift-eyebrow),
-.pfp-reveal p {
+.earbuds-note > p:not(.gift-eyebrow) {
   color: var(--ink-soft);
   line-height: 1.65;
 }
@@ -645,8 +671,7 @@ summary:focus-visible {
 
 .reveal-button,
 .copy-button,
-.download-button,
-.pfp-actions a {
+.download-button {
   min-height: 52px;
   border: 0;
   border-radius: 999px;
@@ -660,8 +685,7 @@ summary:focus-visible {
 
 .reveal-button:hover,
 .copy-button:hover,
-.download-button:hover,
-.pfp-actions a:hover {
+.download-button:hover {
   transform: translateY(-2px);
   background: #205f59;
   box-shadow: 0 14px 25px rgba(44, 116, 109, 0.25);
@@ -879,117 +903,6 @@ summary:focus-visible {
 .music-lines span:first-child { transform: rotate(-9deg) translateY(8px); }
 .music-lines span:last-child { transform: rotate(10deg); }
 
-.botanical-heart {
-  position: relative;
-  min-height: 360px;
-  margin: 40px clamp(20px, 5vw, 58px) 20px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50% 50% 18px 18px;
-  background: radial-gradient(circle, #fff5d1 0 16%, #e6efda 44%, transparent 70%);
-}
-
-.heart-sun {
-  position: relative;
-  z-index: 2;
-  width: 190px;
-  height: 190px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid rgba(199, 158, 58, 0.34);
-  border-radius: 50%;
-  background: #fff8d9;
-  box-shadow: 0 0 0 18px rgba(248, 217, 120, 0.14), 0 0 0 39px rgba(248, 217, 120, 0.08);
-  font-family: Georgia, serif;
-  font-size: 1.4rem;
-  font-style: italic;
-}
-
-.heart-sun i {
-  color: #c77978;
-  font-style: normal;
-}
-
-.stem {
-  position: absolute;
-  bottom: 30px;
-  width: 140px;
-  height: 250px;
-  border-left: 3px solid #759274;
-  border-radius: 50%;
-}
-
-.stem-left { left: 17%; transform: rotate(-22deg); }
-.stem-right { right: 17%; transform: rotate(202deg); }
-
-.stem i {
-  position: absolute;
-  width: 36px;
-  height: 54px;
-  border-radius: 90% 0 90% 0;
-  background: #a8c69a;
-}
-
-.stem i:nth-child(1) { left: -34px; top: 54px; transform: rotate(-14deg); }
-.stem i:nth-child(2) { left: 3px; top: 105px; transform: scaleX(-1) rotate(-20deg); }
-.stem i:nth-child(3) { left: -32px; top: 158px; transform: rotate(-8deg); }
-
-.botanical-heart > p {
-  position: absolute;
-  z-index: 3;
-  bottom: 22px;
-  margin: 0;
-  font-family: Georgia, serif;
-  font-style: italic;
-}
-
-.secret {
-  position: absolute;
-  z-index: 4;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  color: rgba(70, 106, 73, 0.55);
-  background: transparent;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.secret-left { left: 10%; top: 21%; }
-.secret-right { right: 9%; top: 29%; }
-
-.pfp-reveal {
-  padding: 30px;
-  display: grid;
-  grid-template-columns: minmax(250px, 0.8fr) 1fr;
-  align-items: center;
-  gap: 44px;
-  background: #f5e6e1;
-}
-
-.pfp-reveal > img {
-  width: 100%;
-  border-radius: 14px;
-}
-
-.pfp-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.pfp-actions a {
-  min-height: 46px;
-  padding: 0 22px;
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-}
-
 .letter-ending {
   padding: 65px 26px 82px;
   text-align: center;
@@ -1052,13 +965,27 @@ summary:focus-visible {
 }
 
 .read-again {
-  border: 0;
-  border-bottom: 1px solid currentColor;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid rgba(82, 116, 94, 0.3);
+  border-radius: 999px;
   color: var(--deep-sage);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.58);
   cursor: pointer;
   font-size: 0.78rem;
   font-weight: 800;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.read-again::before {
+  content: "↑";
+  margin-right: 8px;
+}
+
+.read-again:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 9px 20px rgba(62, 86, 66, 0.12);
 }
 
 @media (max-width: 790px) {
@@ -1071,8 +998,7 @@ summary:focus-visible {
   }
 
   .pokopia-gift,
-  .small-gifts,
-  .pfp-reveal {
+  .small-gifts {
     grid-template-columns: 1fr;
   }
 
@@ -1085,16 +1011,9 @@ summary:focus-visible {
     padding-top: 38px;
   }
 
-  .pokopia-logo {
-    width: min(45%, 220px);
-  }
-
   .letter-header {
     padding: 70px 26px 40px;
   }
-
-  .stem-left { left: 4%; }
-  .stem-right { right: 4%; }
 }
 
 @media (max-width: 520px) {
@@ -1104,6 +1023,10 @@ summary:focus-visible {
 
   .envelope-scene {
     width: 98vw;
+  }
+
+  .envelope-scene.is-flap-open {
+    transform: translateY(28px);
   }
 
   .interaction-help {
@@ -1138,19 +1061,13 @@ summary:focus-visible {
 
   .gift-section,
   .small-gifts,
-  .earbuds-note,
-  .botanical-heart {
+  .earbuds-note {
     margin-left: 12px;
     margin-right: 12px;
   }
 
   .pokopia-visual {
     min-height: 245px;
-  }
-
-  .pokopia-logo {
-    left: 15px;
-    bottom: 14px;
   }
 
   .pokopia-copy,
@@ -1162,14 +1079,6 @@ summary:focus-visible {
     gap: 14px;
   }
 
-  .botanical-heart {
-    min-height: 320px;
-  }
-
-  .heart-sun {
-    width: 150px;
-    height: 150px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
