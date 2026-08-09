@@ -1,18 +1,18 @@
 export const giftContent = {
-  recipientName: "my love",
-  senderName: "always yours",
+  recipientName: "Raneem",
+  senderName: "Jin",
   salutation: "My sweetest love,",
-  cardTitle: "Happy Birthday, my love",
-  cardSubtitle: "A little letter, carried by summer",
-  letterMessage: `I hope today wraps around you as softly as sunshine through the trees.
+  cardTitle: "Happy Birthday, my beautiful fairy princess",
+  cardSubtitle: "For the light of my life",
+  letterMessage: `I hope today, and all the tomorrows to come, wrap around you as softly as sunshine through the trees.
 
 You make ordinary days feel warmer, funnier, and so much more beautiful. Loving you is one of the easiest and happiest things I have ever done, and I feel lucky every day that I get to know you, cheer for you, and dream about all the little tomorrows we still have ahead of us.
 
 I wanted to gather a few small pieces of that love here for you. Some are things to open, some are things to look forward to, and all of them are just another way of saying that you are precious to me.
 
-Happy birthday, sweetheart. I love you more than I ever manage to fit into words.`,
+Happy birthday, Raneem. I love you more than I ever manage to fit into words.`,
   finalMessage:
-    "For this birthday, and every quiet little adventure after it. I love you.",
+    "For this birthday, and all of the ones to come after it. I love you.",
   pokopia: {
     eyebrow: "A whole new world for you",
     title: "Something new to explore",
