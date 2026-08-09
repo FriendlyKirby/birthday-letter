@@ -3,7 +3,6 @@ name: Deploy birthday letter to GitHub Pages
 on:
   push:
     branches: [main]
-
   workflow_dispatch:
 
 permissions:
