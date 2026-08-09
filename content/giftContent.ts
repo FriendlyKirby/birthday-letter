@@ -18,7 +18,7 @@ Happy birthday, Raneem. I love you more than I ever manage to fit into words.`,
     title: "Something new to explore",
     message:
       "A Pokémon Pokopia Expansion Pass, with new places, new friends, and one more cozy world to make your own.",
-    code: "REPLACE_WITH_YOUR_POKOPIA_CODE",
+    code: "E1XL3J7B5MXC5D8R",
   },
   spoilingMessage: "I just want to spoil you for the rest of our lives.",
   earbudsMessage:
