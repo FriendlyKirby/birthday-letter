@@ -12,6 +12,8 @@ const clamp = (value: number, min = 0, max = 1) =>
 const assetPath = (path: string) =>
   `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
 
+const DEFAULT_MUSIC_VOLUME = 20;
+
 function Petal({ className }: { className: string }) {
   return <span className={`petal ${className}`} aria-hidden="true" />;
 }
@@ -30,6 +32,25 @@ export function BirthdayExperience({ content }: Props) {
   const [copied, setCopied] = useState(false);
   const [secretCount, setSecretCount] = useState(0);
   const [musicOpen, setMusicOpen] = useState(false);
+
+  const musicFrameRef = useRef<HTMLIFrameElement>(null);
+  const [musicVolume, setMusicVolume] = useState(DEFAULT_MUSIC_VOLUME);
+  
+  function setYouTubeVolume(volume: number) {
+    musicFrameRef.current?.contentWindow?.postMessage(
+      JSON.stringify({
+        event: "command",
+        func: "setVolume",
+        args: [volume],
+      }),
+      "https://www.youtube-nocookie.com",
+    );
+  }
+  
+  function updateMusicVolume(volume: number) {
+    setMusicVolume(volume);
+    setYouTubeVolume(volume);
+  }
 
   const flapOpen = flapProgress >= 1;
 
@@ -174,13 +195,33 @@ export function BirthdayExperience({ content }: Props) {
               </button>
             </header>
             <iframe
+              ref={musicFrameRef}
               className="youtube-player"
-              src={`https://www.youtube-nocookie.com/embed/${content.music.youtubeVideoId}?autoplay=1&loop=1&playlist=${content.music.youtubeVideoId}&playsinline=1&rel=0`}
+              src={`https://www.youtube-nocookie.com/embed/${content.music.youtubeVideoId}?autoplay=1&loop=1&playlist=${content.music.youtubeVideoId}&playsinline=1&rel=0&enablejsapi=1`}
               title={`${content.music.title} by ${content.music.artist}`}
               allow="autoplay; encrypted-media; picture-in-picture"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
+              onLoad={() => {
+                window.setTimeout(() => setYouTubeVolume(musicVolume), 400);
+                window.setTimeout(() => setYouTubeVolume(musicVolume), 1000);
+              }}
             />
+            <label className="music-volume">
+            <span>Volume</span>
+          
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value={musicVolume}
+              onChange={(event) => updateMusicVolume(Number(event.target.value))}
+              aria-label="Background music volume"
+            />
+          
+            <output>{musicVolume}%</output>
+          </label>
             <a
               className="music-source"
               href={`https://www.youtube.com/watch?v=${content.music.youtubeVideoId}`}
