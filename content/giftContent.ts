@@ -26,8 +26,9 @@ Happy birthday, Raneem. I love you more than I ever manage to fit into words.`,
   extension: {
     title: "Daily Puzzle Launcher",
     message:
-      "I made you a tiny Chrome companion for keeping our daily games in one sweet, tidy place.",
-    downloadPath: "/downloads/chrome-web-store-submission-v0.2.14.zip",
+      "I made you a tiny companion for keeping our daily games in one sweet, tidy place.",
+    chromeDownloadPath: "/downloads/daily-puzzle-launcher-chrome-brave-v0.2.14.zip",
+    safariDownloadPath: "/downloads/daily-puzzle-launcher-safari-v0.2.14.zip",
     version: "v0.2.14",
   },
   music: {
