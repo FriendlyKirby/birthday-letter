@@ -1,8 +1,8 @@
 export const giftContent = {
   recipientName: "Raneem",
   senderName: "Jin",
-  salutation: "My sweetest love,",
-  cardTitle: "Happy Birthday, my beautiful fairy princess",
+  salutation: "My most beautiful fairy princess,",
+  cardTitle: "Happy Birthday, my love",
   cardSubtitle: "For the light of my life",
   letterMessage: `I hope today, and all the tomorrows to come, wrap around you as softly as sunshine through the trees.
 
