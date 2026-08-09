@@ -397,9 +397,23 @@ export function BirthdayExperience({ content }: Props) {
               <p className="gift-eyebrow">Something I made for us</p>
               <h3>{content.extension.title}</h3>
               <p>{content.extension.message}</p>
-              <a className="download-button" href={assetPath(content.extension.downloadPath)} download>
-                Download {content.extension.version}
-              </a>
+              <div className="extension-downloads">
+                <a
+                  className="download-button"
+                  href={assetPath(content.extension.chromeDownloadPath)}
+                  download
+                >
+                  Chrome / Brave
+                </a>
+              
+                <a
+                  className="download-button"
+                  href={assetPath(content.extension.safariDownloadPath)}
+                  download
+                >
+                  Safari
+                </a>
+              </div>
               <details className="install-help">
                 <summary>How to add it to Chrome</summary>
                 <ol>
