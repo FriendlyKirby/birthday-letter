@@ -267,7 +267,6 @@ export function BirthdayExperience({ content }: Props) {
           >
             <span className="flap-paper" aria-hidden="true" />
             <span className="wax-seal" aria-hidden="true">J</span>
-            <span className="flap-hint">lift</span>
           </button>
         </div>
 
