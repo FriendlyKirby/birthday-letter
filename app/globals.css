@@ -377,21 +377,6 @@ summary:focus-visible {
   opacity: calc(1 - var(--flap-progress) * 1.5);
   transition: opacity 180ms ease;
 }
-
-.flap-hint {
-  position: absolute;
-  left: 50%;
-  bottom: -56px;
-  z-index: 3;
-  color: var(--ink-soft);
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  opacity: calc(1 - var(--flap-progress));
-}
-
 .envelope-flap:focus-visible {
   outline: none;
 }
