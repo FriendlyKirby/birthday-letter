@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Our Daily Games</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="eyebrow">a tiny place for</span>
+        <h1>Our daily games</h1>
+        <p>Open, add, remove, and reorder all the little games we share.</p>
+      </header>
+
+      <ul id="sites" aria-label="Saved game sites"></ul>
+
+      <form id="add-site">
+        <h2>Add a game</h2>
+        <label>Name <input id="name" required maxlength="40" placeholder="Connections" /></label>
+        <label>Website <input id="url" required type="url" placeholder="https://..." /></label>
+        <button type="submit">Add to our list</button>
+      </form>
+
+      <button id="show-page" class="secondary" type="button">Show the little launcher on this page</button>
+      <p id="status" role="status"></p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

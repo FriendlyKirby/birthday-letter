@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Our Daily Games",
+  "version": "1.0.0",
+  "description": "Keep the little games we share in one cozy place.",
+  "permissions": ["storage", "tabs", "activeTab", "scripting"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "action": {
+    "default_title": "Our Daily Games",
+    "default_popup": "popup.html"
+  }
+}
